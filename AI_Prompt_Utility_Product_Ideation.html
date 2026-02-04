@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Utility Product Ideation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e4e4e7;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #a1a1aa;
+            font-size: 1.1rem;
+        }
+
+        .framework {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .framework h2 {
+            color: #818cf8;
+            margin-bottom: 20px;
+        }
+
+        .matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .matrix-cell {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .matrix-cell h4 {
+            font-size: 0.9rem;
+            color: #71717a;
+            margin-bottom: 10px;
+        }
+
+        .matrix-cell ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .matrix-cell li {
+            padding: 4px 0;
+            color: #a1a1aa;
+        }
+
+        .quadrant-section {
+            margin-bottom: 60px;
+        }
+
+        .quadrant-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .quadrant-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .consumer-ux .quadrant-icon { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+        .consumer-enhance .quadrant-icon { background: linear-gradient(135deg, #10b981, #34d399); }
+        .business-ux .quadrant-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .business-enhance .quadrant-icon { background: linear-gradient(135deg, #ef4444, #f87171); }
+        .cross-quadrant .quadrant-icon { background: linear-gradient(135deg, #6366f1, #a855f7); }
+
+        .quadrant-title {
+            font-size: 1.5rem;
+            color: #f4f4f5;
+        }
+
+        .existing-products {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .existing-products h4 {
+            color: #71717a;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .product-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .product-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .new-products {
+            margin-bottom: 15px;
+        }
+
+        .new-products h4 {
+            color: #71717a;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .product-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 28px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            color: #f4f4f5;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: #818cf8;
+            border-radius: 50%;
+        }
+
+        .problem-text {
+            color: #d4d4d8;
+            font-size: 0.95rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 12px 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .audience-item {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .audience-label {
+            color: #71717a;
+            font-size: 0.75rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .audience-value {
+            color: #a7f3d0;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #c7d2fe;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .features-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-letter {
+            background: #6366f1;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .summary-section {
+            margin-top: 60px;
+        }
+
+        .summary-section h2 {
+            color: #818cf8;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .summary-table th {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #a5b4fc;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .quadrant-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-consumer-ux { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+        .badge-consumer-enhance { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+        .badge-business-ux { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .badge-business-enhance { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .badge-bridge { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
+
+        .nav-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            max-width: 200px;
+        }
+
+        .nav-fixed h4 {
+            color: #71717a;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .nav-fixed a {
+            display: block;
+            color: #a1a1aa;
+            text-decoration: none;
+            padding: 6px 0;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .nav-fixed a:hover {
+            color: #818cf8;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #71717a;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .matrix {
+                grid-template-columns: 1fr;
+            }
+
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-fixed {
+                display: none;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-fixed">
+        <h4>Quick Nav</h4>
+        <a href="#consumer-ux">Consumer + UX</a>
+        <a href="#consumer-enhance">Consumer + Enhance</a>
+        <a href="#business-ux">Business + UX</a>
+        <a href="#business-enhance">Business + Enhance</a>
+        <a href="#cross-quadrant">Cross-Quadrant</a>
+        <a href="#summary">Summary Table</a>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>AI Prompt Utility Product Ideation</h1>
+            <p class="subtitle">2x2 Matrix Framework Analysis | 30 Product Ideas</p>
+        </header>
+
+        <div class="framework">
+            <h2>Framework Overview</h2>
+            <p style="color: #a1a1aa; margin-bottom: 20px;">Based on 2x2 Matrix Analysis from whiteboard session</p>
+            <div class="matrix">
+                <div class="matrix-cell">
+                    <h4>Y-Axis: Target Audience</h4>
+                    <ul>
+                        <li><strong>Consumer</strong> - Individual users, creators</li>
+                        <li><strong>Business</strong> - Teams, enterprises</li>
+                    </ul>
+                </div>
+                <div class="matrix-cell">
+                    <h4>X-Axis: Value Proposition</h4>
+                    <ul>
+                        <li><strong>Enhance</strong> - Power features, capabilities</li>
+                        <li><strong>UX</strong> - Simplicity, user experience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUADRANT 1: Consumer + UX -->
+        <section id="consumer-ux" class="quadrant-section consumer-ux">
+            <div class="quadrant-header">
+                <div class="quadrant-icon">🎯</div>
+                <h2 class="quadrant-title">Consumer + UX</h2>
+            </div>
+
+            <div class="existing-products">
+                <h4>Existing Products</h4>
+                <div class="product-tags">
+                    <span class="product-tag">AI PRM</span>
+                    <span class="product-tag">Flash Prompt</span>
+                    <span class="product-tag">Midjourney → Fabric</span>
+                    <span class="product-tag">PromptHero</span>
+                    <span class="product-tag">Lexica</span>
+                    <span class="product-tag">PromptBase</span>
+                    <span class="product-tag">Poe</span>
+                    <span class="product-tag">Character.ai</span>
+                </div>
+            </div>
+
+            <div class="new-products">
+                <h4>New Product Ideas</h4>
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <span class="product-number">1</span>
+                        <h3 class="product-name">PromptPal</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">일반 사용자들이 ChatGPT, Midjourney 등 AI 도구를 사용할 때 원하는 결과물을 얻기 위한 '좋은 프롬프트'를 작성하는 방법을 모른다. 수십 번의 시행착오를 거쳐야 하며, 시간 낭비와 frustration이 발생한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 도구를 처음 접하는 20-40대 일반 소비자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">기술적 지식이 부족한 크리에이터 지망생</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 자연어 입력 → AI 최적화 프롬프트 자동 변환</li>
+                                <li><span class="feature-letter">B</span> 목적별 프롬프트 템플릿 라이브러리</li>
+                                <li><span class="feature-letter">C</span> 프롬프트 성능 평가 점수 및 개선 제안</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <span class="product-number">2</span>
+                        <h3 class="product-name">DailyPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">AI를 활용해 일상적인 작업(일정 관리, 메모 정리, 아이디어 브레인스토밍)을 하고 싶지만, 매번 프롬프트를 처음부터 작성하는 것이 번거롭다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">25-45세 직장인 및 프리랜서</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">생산성 향상에 관심있는 셀프 매니지먼트 유저</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 일상 루틴 기반 자동 프롬프트 생성</li>
+                                <li><span class="feature-letter">B</span> 캘린더 연동 컨텍스트 인식 프롬프트</li>
+                                <li><span class="feature-letter">C</span> 습관 트래킹과 연계된 프롬프트 추천</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <span class="product-number">3</span>
+                        <h3 class="product-name">PromptTranslate</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">비영어권 사용자들이 영어로 된 고품질 프롬프트를 발견해도 자신의 언어로 효과적으로 변환하기 어렵다. 단순 번역은 프롬프트의 뉘앙스와 효과를 잃게 만든다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">비영어권 국가의 AI 도구 사용자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">다국어 콘텐츠 제작자, 얼리어답터</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프롬프트 전용 다국어 번역 엔진 (뉘앙스 보존)</li>
+                                <li><span class="feature-letter">B</span> 문화적 컨텍스트 자동 조정</li>
+                                <li><span class="feature-letter">C</span> 역번역 검증 시스템</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <span class="product-number">4</span>
+                        <h3 class="product-name">VoicePrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">운전 중, 요리 중, 운동 중 등 손을 사용할 수 없는 상황에서 AI에게 복잡한 요청을 하기 어렵다. 음성 인식만으로는 정교한 프롬프트 구성이 불가능하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">멀티태스킹이 많은 30-50대 바쁜 현대인</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">음성 인터페이스 선호, 접근성 필요 사용자</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 음성→구조화된 프롬프트 자동 변환</li>
+                                <li><span class="feature-letter">B</span> 컨텍스트 기억 및 후속 질문 자동 생성</li>
+                                <li><span class="feature-letter">C</span> 핸즈프리 결과물 읽어주기 기능</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card">
+                        <span class="product-number">5</span>
+                        <h3 class="product-name">PromptSocial</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">좋은 프롬프트를 발견하거나 만들어도 혼자만 사용하게 된다. 커뮤니티에서 프롬프트를 공유하고 피드백을 받으며 함께 개선할 수 있는 소셜 플랫폼이 없다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 창작에 열정적인 18-35세 Z세대/밀레니얼</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">커뮤니티 참여를 즐기는 소셜 크리에이터</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프롬프트 공유 피드 (좋아요, 댓글, 리믹스)</li>
+                                <li><span class="feature-letter">B</span> 챌린지/대회 시스템 (주간 테마별 배틀)</li>
+                                <li><span class="feature-letter">C</span> 크리에이터 팔로우 및 컬렉션 기능</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUADRANT 2: Consumer + Enhance -->
+        <section id="consumer-enhance" class="quadrant-section consumer-enhance">
+            <div class="quadrant-header">
+                <div class="quadrant-icon">⚡</div>
+                <h2 class="quadrant-title">Consumer + Enhance</h2>
+            </div>
+
+            <div class="existing-products">
+                <h4>Existing Products</h4>
+                <div class="product-tags">
+                    <span class="product-tag">Picchi</span>
+                    <span class="product-tag">Mefty+OX</span>
+                    <span class="product-tag">Stable Diffusion Web UI</span>
+                    <span class="product-tag">ComfyUI</span>
+                    <span class="product-tag">Civitai</span>
+                    <span class="product-tag">Leonardo.ai</span>
+                    <span class="product-tag">NightCafe</span>
+                </div>
+            </div>
+
+            <div class="new-products">
+                <h4>New Product Ideas</h4>
+                <div class="products-grid">
+                    <!-- Product 6 -->
+                    <div class="product-card">
+                        <span class="product-number">6</span>
+                        <h3 class="product-name">PromptChain</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">복잡한 창작 작업(소설 쓰기, 영상 시나리오)은 단일 프롬프트로 해결되지 않는다. 여러 단계의 프롬프트를 순차적으로 연결해야 하지만, 이 과정이 수동적이고 번거롭다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">장편 콘텐츠 제작 아마추어 작가/크리에이터</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">체계적 창작 프로세스를 원하는 프로슈머</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 드래그앤드롭 프롬프트 체인 빌더</li>
+                                <li><span class="feature-letter">B</span> 이전 출력 → 다음 입력 자동 연결</li>
+                                <li><span class="feature-letter">C</span> 분기점/조건부 프롬프트 로직 지원</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 7 -->
+                    <div class="product-card">
+                        <span class="product-number">7</span>
+                        <h3 class="product-name">StyleSync</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">AI 이미지 생성시 일관된 스타일을 유지하기 어렵다. 캐릭터 시리즈, 브랜드 이미지 등을 만들 때 매번 다른 스타일이 나와서 통일성이 없다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">웹툰 작가, 인디 게임 개발자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">시리즈 콘텐츠 크리에이터</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 스타일 프리셋 저장 및 적용</li>
+                                <li><span class="feature-letter">B</span> 레퍼런스 이미지 기반 스타일 추출</li>
+                                <li><span class="feature-letter">C</span> 배치 생성시 일관성 점수 표시</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 8 -->
+                    <div class="product-card">
+                        <span class="product-number">8</span>
+                        <h3 class="product-name">PromptDebugger</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">프롬프트가 왜 원하는 결과를 내지 않는지 이해하기 어렵다. 어떤 단어나 구문이 문제인지 알 수 없어서 맹목적으로 수정을 반복한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 도구 중급 사용자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">프롬프트 품질을 체계적으로 개선하려는 학습자</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프롬프트 구문 분석 및 영향도 시각화</li>
+                                <li><span class="feature-letter">B</span> 잠재적 문제점 하이라이트 및 대안 제시</li>
+                                <li><span class="feature-letter">C</span> A/B 비교 테스트 자동화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 9 -->
+                    <div class="product-card">
+                        <span class="product-number">9</span>
+                        <h3 class="product-name">PromptMemory</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">AI와의 대화 세션이 끊기면 이전 맥락이 사라진다. 장기 프로젝트에서 매번 같은 설정과 지시사항을 반복 입력해야 하는 비효율이 발생한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">장기 프로젝트 진행 중인 개인 크리에이터</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">일관된 AI 어시스턴트 경험을 원하는 파워유저</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프로젝트별 영구 컨텍스트 저장소</li>
+                                <li><span class="feature-letter">B</span> 자동 요약 및 핵심 정보 추출</li>
+                                <li><span class="feature-letter">C</span> 크로스 플랫폼 컨텍스트 동기화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 10 -->
+                    <div class="product-card">
+                        <span class="product-number">10</span>
+                        <h3 class="product-name">PromptCraft</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">게임, 소설, 애니메이션 등 창작물을 위한 복잡한 세계관과 캐릭터 설정을 AI에게 효과적으로 전달하기 어렵다. 매번 긴 배경 설명을 입력해야 한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">TRPG 게임 마스터, 팬픽션 작가</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">복잡한 설정의 창작 세계를 구축하는 월드빌더</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 세계관/캐릭터 데이터베이스 빌더</li>
+                                <li><span class="feature-letter">B</span> 자동 컨텍스트 주입 시스템</li>
+                                <li><span class="feature-letter">C</span> 설정 일관성 체크 및 모순 감지</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUADRANT 3: Business + UX -->
+        <section id="business-ux" class="quadrant-section business-ux">
+            <div class="quadrant-header">
+                <div class="quadrant-icon">💼</div>
+                <h2 class="quadrant-title">Business + UX</h2>
+            </div>
+
+            <div class="existing-products">
+                <h4>Existing Products</h4>
+                <div class="product-tags">
+                    <span class="product-tag">Kling AI</span>
+                    <span class="product-tag">Dream Machine</span>
+                    <span class="product-tag">PromptLayer</span>
+                    <span class="product-tag">Notion AI</span>
+                    <span class="product-tag">Copy.ai</span>
+                    <span class="product-tag">Tome</span>
+                    <span class="product-tag">Gamma</span>
+                </div>
+            </div>
+
+            <div class="new-products">
+                <h4>New Product Ideas</h4>
+                <div class="products-grid">
+                    <!-- Product 11 -->
+                    <div class="product-card">
+                        <span class="product-number">11</span>
+                        <h3 class="product-name">BrandVoice AI</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 다양한 채널에서 일관된 브랜드 톤앤매너를 유지하기 어렵다. 담당자마다, AI 도구마다 다른 결과물이 나와 브랜드 아이덴티티가 희석된다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">마케팅 팀 리드, 브랜드 매니저</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">10-100인 규모 스타트업 마케팅 부서</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 브랜드 가이드라인 학습 및 톤 분석</li>
+                                <li><span class="feature-letter">B</span> 모든 AI 출력에 자동 브랜드 톤 적용</li>
+                                <li><span class="feature-letter">C</span> 일관성 점수 대시보드 및 리포트</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 12 -->
+                    <div class="product-card">
+                        <span class="product-number">12</span>
+                        <h3 class="product-name">MeetingPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">화상 회의 후 회의록 작성, 액션 아이템 추출, 팔로업 이메일 작성 등 후속 작업에 많은 시간이 소요된다. 기존 AI는 회의 맥락을 이해하지 못한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">프로젝트 매니저, 팀 리더</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">원격/하이브리드 근무 환경 협업 팀</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 회의 녹취→구조화된 요약 원클릭 변환</li>
+                                <li><span class="feature-letter">B</span> 참석자별 액션 아이템 자동 추출/할당</li>
+                                <li><span class="feature-letter">C</span> 팔로업 커뮤니케이션 초안 자동 생성</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 13 -->
+                    <div class="product-card">
+                        <span class="product-number">13</span>
+                        <h3 class="product-name">SalesPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">B2B 영업팀이 리드별로 맞춤화된 아웃리치 메시지를 작성하는 데 많은 시간이 걸린다. 일반 AI는 개인화가 부족하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">B2B 영업 담당자, SDR</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">아웃바운드 영업 중심 SaaS/테크 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> CRM 연동 자동 리드 정보 수집</li>
+                                <li><span class="feature-letter">B</span> 산업/직책/페인포인트 기반 메시지 개인화</li>
+                                <li><span class="feature-letter">C</span> 응답률 기반 프롬프트 자동 최적화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 14 -->
+                    <div class="product-card">
+                        <span class="product-number">14</span>
+                        <h3 class="product-name">LegalPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">중소기업이 법률 문서(계약서, NDA, 이용약관)를 작성/검토할 때 변호사 비용이 부담되지만, 일반 AI는 법률적 정확성이 부족하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">스타트업 대표, 법무팀 없는 중소기업</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">법률 서비스 비용에 민감한 초기 단계 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 법률 문서 템플릿 + 맞춤화 가이드</li>
+                                <li><span class="feature-letter">B</span> 조항별 리스크 하이라이트 및 설명</li>
+                                <li><span class="feature-letter">C</span> 관할권별 법률 요건 자동 체크</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 15 -->
+                    <div class="product-card">
+                        <span class="product-number">15</span>
+                        <h3 class="product-name">HRPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">HR 담당자가 채용공고 작성, 면접 질문 준비, 피드백 작성 등 반복적인 문서 작업에 많은 시간을 쓴다. 기존 AI는 HR 특화 용어와 컴플라이언스를 이해하지 못한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">HR 매니저, 채용 담당자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">50-500인 규모 급성장 기업 HR팀</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 직무별 채용공고 자동 생성 (DEI 준수)</li>
+                                <li><span class="feature-letter">B</span> 역량 기반 면접 질문 생성기</li>
+                                <li><span class="feature-letter">C</span> 성과 평가 피드백 초안 작성</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUADRANT 4: Business + Enhance -->
+        <section id="business-enhance" class="quadrant-section business-enhance">
+            <div class="quadrant-header">
+                <div class="quadrant-icon">🚀</div>
+                <h2 class="quadrant-title">Business + Enhance</h2>
+            </div>
+
+            <div class="existing-products">
+                <h4>Existing Products</h4>
+                <div class="product-tags">
+                    <span class="product-tag">Higgsfield AI</span>
+                    <span class="product-tag">Krea AI</span>
+                    <span class="product-tag">Invideo AI</span>
+                    <span class="product-tag">LTX Studio</span>
+                    <span class="product-tag">Zapier Central</span>
+                    <span class="product-tag">Runway ML</span>
+                    <span class="product-tag">Jasper</span>
+                    <span class="product-tag">Synthesia</span>
+                    <span class="product-tag">HeyGen</span>
+                    <span class="product-tag">ElevenLabs</span>
+                </div>
+            </div>
+
+            <div class="new-products">
+                <h4>New Product Ideas</h4>
+                <div class="products-grid">
+                    <!-- Product 16 -->
+                    <div class="product-card">
+                        <span class="product-number">16</span>
+                        <h3 class="product-name">DataPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">비개발자 직원이 데이터 분석을 위해 SQL 쿼리나 Python 코드를 작성해야 할 때 기술적 장벽이 있다. 자연어로 질문해도 정확한 쿼리 생성이 어렵다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">비즈니스 분석가, 마케팅 데이터 담당자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">데이터 기반 의사결정을 원하는 비기술 부서</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 자연어→SQL/Python 쿼리 자동 변환</li>
+                                <li><span class="feature-letter">B</span> 데이터베이스 스키마 자동 이해/최적화</li>
+                                <li><span class="feature-letter">C</span> 결과 시각화 및 인사이트 자동 생성</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 17 -->
+                    <div class="product-card">
+                        <span class="product-number">17</span>
+                        <h3 class="product-name">APIPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 여러 AI 모델(OpenAI, Anthropic, Google)을 테스트하려면 각각의 API를 별도로 연동해야 한다. 프롬프트 포맷도 다르고 비용 추적도 어렵다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI/ML 엔지니어, 프로덕트 매니저</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">AI 기능을 제품에 통합하려는 테크 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 통합 API 게이트웨이 (모든 주요 LLM 지원)</li>
+                                <li><span class="feature-letter">B</span> 프롬프트 자동 포맷 변환 (모델별 최적화)</li>
+                                <li><span class="feature-letter">C</span> 비용/성능/품질 비교 대시보드</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 18 -->
+                    <div class="product-card">
+                        <span class="product-number">18</span>
+                        <h3 class="product-name">CompliancePrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 AI를 활용한 콘텐츠 생성시 브랜드 가이드라인, 법적 규제, 내부 정책을 위반할 수 있다. 생성된 콘텐츠를 일일이 검토하는 것은 비효율적이다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">컴플라이언스 담당자, 법무팀</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">규제 산업(금융, 헬스케어, 광고)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 커스텀 규칙/정책 설정 엔진</li>
+                                <li><span class="feature-letter">B</span> AI 출력 실시간 스캔 및 위반 감지</li>
+                                <li><span class="feature-letter">C</span> 자동 수정 제안 및 승인 워크플로우</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 19 -->
+                    <div class="product-card">
+                        <span class="product-number">19</span>
+                        <h3 class="product-name">TrainingPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 직원 교육용 콘텐츠를 제작하는 데 많은 시간과 비용이 든다. AI를 활용하고 싶지만 교육학적 설계 원칙을 반영한 콘텐츠 생성이 어렵다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">L&D 매니저, 교육 콘텐츠 개발자</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">100인 이상 기업 인재개발 부서</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 학습 목표 기반 커리큘럼 자동 설계</li>
+                                <li><span class="feature-letter">B</span> 다양한 포맷(영상, 퀴즈, 케이스) 생성</li>
+                                <li><span class="feature-letter">C</span> 난이도 조절 및 개인화 학습 경로</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 20 -->
+                    <div class="product-card">
+                        <span class="product-number">20</span>
+                        <h3 class="product-name">PromptOps</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업에서 여러 팀이 AI 프롬프트를 사용하지만, 버전 관리, 성능 모니터링, 협업이 체계적으로 이루어지지 않는다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI/ML Ops 엔지니어, 테크 리드</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">AI를 프로덕션에 적극 활용하는 테크 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> Git 스타일 프롬프트 버전 관리</li>
+                                <li><span class="feature-letter">B</span> A/B 테스트 및 성능 메트릭 추적</li>
+                                <li><span class="feature-letter">C</span> 팀 협업 및 권한 관리 시스템</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 21 -->
+                    <div class="product-card">
+                        <span class="product-number">21</span>
+                        <h3 class="product-name">LocalizePrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">글로벌 기업이 마케팅 콘텐츠를 다국어로 제작할 때, 단순 번역으로는 현지화가 부족하다. 문화적 뉘앙스와 현지 규제를 반영하기 어렵다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">글로벌 마케팅 매니저, 로컬라이제이션 팀</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">다국적 시장에 진출한 중견기업 이상</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 문화적 컨텍스트 반영 AI 현지화</li>
+                                <li><span class="feature-letter">B</span> 지역별 마케팅 규제 자동 체크</li>
+                                <li><span class="feature-letter">C</span> 현지 트렌드 데이터 연동 최적화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 22 -->
+                    <div class="product-card">
+                        <span class="product-number">22</span>
+                        <h3 class="product-name">CustomerPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">고객 지원팀이 반복되는 문의에 답변하면서도 개인화된 응대를 유지하기 어렵다. 매크로는 딱딱하고, 매번 직접 작성하면 시간이 오래 걸린다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">고객 지원 매니저, CS 에이전트</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">SaaS, 이커머스 등 고객 접점이 많은 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 고객 이력 기반 응답 자동 개인화</li>
+                                <li><span class="feature-letter">B</span> 감정 분석 및 톤 조절 (불만 고객 대응)</li>
+                                <li><span class="feature-letter">C</span> 다국어 지원 및 채널별 최적화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 23 -->
+                    <div class="product-card">
+                        <span class="product-number">23</span>
+                        <h3 class="product-name">ReportPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">경영진에게 주간/월간 보고서를 작성하는 데 많은 시간이 소요된다. 여러 소스의 데이터를 취합하고 인사이트를 도출하는 과정이 번거롭다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">사업부 매니저, 전략기획팀</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">정기 보고 문화가 있는 중견기업 이상</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 다중 데이터 소스 연동 및 자동 취합</li>
+                                <li><span class="feature-letter">B</span> 핵심 인사이트 자동 추출/하이라이트</li>
+                                <li><span class="feature-letter">C</span> 경영진 맞춤 요약 및 시각화 자동 생성</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUADRANT 5: Cross-Quadrant -->
+        <section id="cross-quadrant" class="quadrant-section cross-quadrant">
+            <div class="quadrant-header">
+                <div class="quadrant-icon">🔗</div>
+                <h2 class="quadrant-title">Cross-Quadrant / Infrastructure</h2>
+            </div>
+
+            <div class="new-products">
+                <h4>Hybrid & Platform Ideas</h4>
+                <div class="products-grid">
+                    <!-- Product 24 -->
+                    <div class="product-card">
+                        <span class="product-number">24</span>
+                        <h3 class="product-name">PromptMarketplace Pro</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">개인 크리에이터가 만든 고품질 프롬프트를 기업이 활용하고 싶지만, 품질 검증과 라이선싱이 불명확하다. 크리에이터는 수익화 채널이 제한적이다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">프롬프트 전문가(판매자) / 기업 마케팅팀(구매자)</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">프롬프트 생태계 참여자 전체</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 품질 검증 및 인증 시스템</li>
+                                <li><span class="feature-letter">B</span> 기업용 라이선스 관리 및 정산</li>
+                                <li><span class="feature-letter">C</span> 맞춤 프롬프트 의뢰 매칭</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 25 -->
+                    <div class="product-card">
+                        <span class="product-number">25</span>
+                        <h3 class="product-name">PromptEducation</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">AI 프롬프트 엔지니어링은 새로운 스킬이지만 체계적인 학습 경로가 없다. 유튜브, 블로그에 파편화된 정보만 있고 실습 기반의 커리큘럼이 부족하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 스킬 향상 희망 직장인, 취준생</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">커리어 전환/업스킬 희망 25-40세 전문직</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 레벨별 학습 로드맵 (초급→고급)</li>
+                                <li><span class="feature-letter">B</span> 인터랙티브 실습 환경 (실시간 피드백)</li>
+                                <li><span class="feature-letter">C</span> 수료증/자격증 및 채용 연계</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 26 -->
+                    <div class="product-card">
+                        <span class="product-number">26</span>
+                        <h3 class="product-name">PromptAnalytics</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 AI 프롬프트를 사용하지만, ROI를 측정할 방법이 없다. 어떤 프롬프트가 비즈니스 성과에 기여하는지 파악이 불가능하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 프로젝트 PM, 데이터 분석가</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">AI 투자 효과를 입증해야 하는 기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프롬프트별 사용량/비용/성과 트래킹</li>
+                                <li><span class="feature-letter">B</span> 비즈니스 KPI 연동 ROI 계산</li>
+                                <li><span class="feature-letter">C</span> 최적화 추천 및 벤치마크 리포트</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 27 -->
+                    <div class="product-card">
+                        <span class="product-number">27</span>
+                        <h3 class="product-name">IndustryPrompt</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">각 산업(의료, 법률, 금융)은 고유한 전문 용어, 규제, 워크플로우가 있다. 범용 AI 도구는 산업별 특수성을 이해하지 못해 실무 적용이 어렵다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">의사, 변호사, 재무설계사 등 전문가</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">규제 엄격, 전문성 요구 산업 종사자</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 산업별 특화 프롬프트 라이브러리</li>
+                                <li><span class="feature-letter">B</span> 전문 용어 자동 인식 및 적용</li>
+                                <li><span class="feature-letter">C</span> 규제 준수 자동 검증</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 28 -->
+                    <div class="product-card">
+                        <span class="product-number">28</span>
+                        <h3 class="product-name">CreativeDirector AI</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">크리에이티브 팀이 AI로 다양한 시안을 생성하지만, 일관된 크리에이티브 디렉션을 유지하기 어렵다. 브랜드 가이드라인과 캠페인 콘셉트를 AI가 이해하지 못한다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">크리에이티브 디렉터, 아트 디렉터</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">광고 에이전시, 인하우스 크리에이티브 팀</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 캠페인 브리프 → AI 크리에이티브 가이드 변환</li>
+                                <li><span class="feature-letter">B</span> 멀티 포맷 일관성 유지</li>
+                                <li><span class="feature-letter">C</span> 시안 평가 및 피드백 자동화</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 29 -->
+                    <div class="product-card">
+                        <span class="product-number">29</span>
+                        <h3 class="product-name">PromptSecurity</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">기업이 AI 프롬프트에 민감한 정보가 포함될 수 있어 보안 우려가 있다. 프롬프트 인젝션 공격, 데이터 유출 위험도 증가하고 있다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">정보보안 담당자, CISO</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">금융, 헬스케어, 정부기관</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 프롬프트 내 민감 정보 자동 감지/마스킹</li>
+                                <li><span class="feature-letter">B</span> 프롬프트 인젝션 공격 탐지/차단</li>
+                                <li><span class="feature-letter">C</span> 감사 로그 및 접근 권한 관리</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Product 30 -->
+                    <div class="product-card">
+                        <span class="product-number">30</span>
+                        <h3 class="product-name">PromptOS</h3>
+
+                        <div class="section">
+                            <div class="section-title">Problem / Use Case</div>
+                            <p class="problem-text">사용자가 여러 AI 도구(ChatGPT, Claude, Midjourney, Copilot)를 각각 별도로 사용해야 한다. 프롬프트와 결과물이 파편화되어 통합 관리가 불가능하다.</p>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Target Audience</div>
+                            <div class="audience-grid">
+                                <div class="audience-item">
+                                    <span class="audience-label">Primary User</span>
+                                    <span class="audience-value">AI 파워유저, 프롬프트 엔지니어</span>
+                                </div>
+                                <div class="audience-item">
+                                    <span class="audience-label">Segment</span>
+                                    <span class="audience-value">멀티 AI 도구 활용 크리에이터/기업</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Key Features (MVP)</div>
+                            <ul class="features-list">
+                                <li><span class="feature-letter">A</span> 통합 AI 워크스페이스 (모든 주요 AI 연동)</li>
+                                <li><span class="feature-letter">B</span> 크로스 플랫폼 프롬프트 라이브러리</li>
+                                <li><span class="feature-letter">C</span> 결과물 통합 관리 및 버전 히스토리</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Table -->
+        <section id="summary" class="summary-section">
+            <h2>Summary Table</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Quadrant</th>
+                        <th>Primary Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>PromptPal</td><td><span class="quadrant-badge badge-consumer-ux">Consumer+UX</span></td><td>프롬프트 최적화</td></tr>
+                    <tr><td>2</td><td>DailyPrompt</td><td><span class="quadrant-badge badge-consumer-ux">Consumer+UX</span></td><td>일상 자동화</td></tr>
+                    <tr><td>3</td><td>PromptTranslate</td><td><span class="quadrant-badge badge-consumer-ux">Consumer+UX</span></td><td>다국어 프롬프트</td></tr>
+                    <tr><td>4</td><td>VoicePrompt</td><td><span class="quadrant-badge badge-consumer-ux">Consumer+UX</span></td><td>음성 인터페이스</td></tr>
+                    <tr><td>5</td><td>PromptSocial</td><td><span class="quadrant-badge badge-consumer-ux">Consumer+UX</span></td><td>커뮤니티/공유</td></tr>
+                    <tr><td>6</td><td>PromptChain</td><td><span class="quadrant-badge badge-consumer-enhance">Consumer+Enhance</span></td><td>워크플로우 빌더</td></tr>
+                    <tr><td>7</td><td>StyleSync</td><td><span class="quadrant-badge badge-consumer-enhance">Consumer+Enhance</span></td><td>스타일 일관성</td></tr>
+                    <tr><td>8</td><td>PromptDebugger</td><td><span class="quadrant-badge badge-consumer-enhance">Consumer+Enhance</span></td><td>프롬프트 분석</td></tr>
+                    <tr><td>9</td><td>PromptMemory</td><td><span class="quadrant-badge badge-consumer-enhance">Consumer+Enhance</span></td><td>컨텍스트 관리</td></tr>
+                    <tr><td>10</td><td>PromptCraft</td><td><span class="quadrant-badge badge-consumer-enhance">Consumer+Enhance</span></td><td>세계관 빌딩</td></tr>
+                    <tr><td>11</td><td>BrandVoice AI</td><td><span class="quadrant-badge badge-business-ux">Business+UX</span></td><td>브랜드 톤 관리</td></tr>
+                    <tr><td>12</td><td>MeetingPrompt</td><td><span class="quadrant-badge badge-business-ux">Business+UX</span></td><td>회의 후속 처리</td></tr>
+                    <tr><td>13</td><td>SalesPrompt</td><td><span class="quadrant-badge badge-business-ux">Business+UX</span></td><td>영업 아웃리치</td></tr>
+                    <tr><td>14</td><td>LegalPrompt</td><td><span class="quadrant-badge badge-business-ux">Business+UX</span></td><td>법률 문서</td></tr>
+                    <tr><td>15</td><td>HRPrompt</td><td><span class="quadrant-badge badge-business-ux">Business+UX</span></td><td>HR 문서 작업</td></tr>
+                    <tr><td>16</td><td>DataPrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>데이터 분석</td></tr>
+                    <tr><td>17</td><td>APIPrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>API 통합</td></tr>
+                    <tr><td>18</td><td>CompliancePrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>규정 준수</td></tr>
+                    <tr><td>19</td><td>TrainingPrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>교육 콘텐츠</td></tr>
+                    <tr><td>20</td><td>PromptOps</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>프롬프트 운영</td></tr>
+                    <tr><td>21</td><td>LocalizePrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>현지화</td></tr>
+                    <tr><td>22</td><td>CustomerPrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>고객 지원</td></tr>
+                    <tr><td>23</td><td>ReportPrompt</td><td><span class="quadrant-badge badge-business-enhance">Business+Enhance</span></td><td>보고서 자동화</td></tr>
+                    <tr><td>24</td><td>PromptMarketplace Pro</td><td><span class="quadrant-badge badge-bridge">Bridge</span></td><td>마켓플레이스</td></tr>
+                    <tr><td>25</td><td>PromptEducation</td><td><span class="quadrant-badge badge-bridge">Bridge</span></td><td>교육/학습</td></tr>
+                    <tr><td>26</td><td>PromptAnalytics</td><td><span class="quadrant-badge badge-bridge">Bridge</span></td><td>ROI 분석</td></tr>
+                    <tr><td>27</td><td>IndustryPrompt</td><td><span class="quadrant-badge badge-bridge">Vertical</span></td><td>산업 특화</td></tr>
+                    <tr><td>28</td><td>CreativeDirector AI</td><td><span class="quadrant-badge badge-bridge">Bridge</span></td><td>크리에이티브 관리</td></tr>
+                    <tr><td>29</td><td>PromptSecurity</td><td><span class="quadrant-badge badge-bridge">Infrastructure</span></td><td>보안</td></tr>
+                    <tr><td>30</td><td>PromptOS</td><td><span class="quadrant-badge badge-bridge">Infrastructure</span></td><td>통합 플랫폼</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <p>AI Prompt Utility Product Ideation Framework</p>
+            <p style="margin-top: 10px; color: #52525b;">Based on 2x2 Matrix Analysis | 30 Product Ideas</p>
+        </footer>
+    </div>
+</body>
+</html>
