@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitor Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
+
+        /* Summary Table */
+        .summary-section {
+            margin-bottom: 100px;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #222;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table th {
+            text-align: left;
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #222;
+        }
+
+        .summary-table td {
+            padding: 16px;
+            border-bottom: 1px solid #111;
+            font-size: 0.9rem;
+            color: #aaa;
+            vertical-align: middle;
+        }
+
+        .summary-table tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #111;
+        }
+
+        .competition-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar-track {
+            width: 80px;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+
+        .bar-fill.low { width: 30%; background: #2a6b3a; }
+        .bar-fill.medium { width: 60%; background: #8a7a2a; }
+        .bar-fill.high { width: 90%; background: #8a2a2a; }
+
+        .diff-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .diff-badge.high { background: #1a2e1a; color: #4a9; border: 1px solid #2a4a2a; }
+        .diff-badge.medium { background: #2e2a1a; color: #a94; border: 1px solid #4a3a1a; }
+        .diff-badge.low { background: #2e1a1a; color: #a44; border: 1px solid #4a1a1a; }
+
+        .rp-tag {
+            padding: 3px 8px;
+            border: 1px solid #333;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        /* Product Sections */
+        .product-section {
+            margin-bottom: 100px;
+            scroll-margin-top: 40px;
+        }
+
+        .product-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+        }
+
+        .product-header-left {
+            flex: 1;
+        }
+
+        .product-number {
+            font-size: 0.7rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 0.9rem;
+            max-width: 600px;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Competitor Cards */
+        .competitors-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .competitor-card {
+            border: 1px solid #222;
+            padding: 24px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .competitor-card:hover {
+            border-color: #444;
+            background: #0a0a0a;
+        }
+
+        .competitor-similarity {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 2px;
+        }
+
+        .competitor-similarity.high { color: #e55; background: #2a1111; }
+        .competitor-similarity.medium { color: #c92; background: #2a2211; }
+        .competitor-similarity.low { color: #6a6; background: #112a11; }
+
+        .competitor-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            padding-right: 60px;
+        }
+
+        .competitor-name a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1px;
+            transition: border-color 0.2s;
+        }
+
+        .competitor-name a:hover {
+            border-color: #fff;
+        }
+
+        .competitor-desc {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Differentiator */
+        .differentiator {
+            border: 1px solid #1a2e1a;
+            background: #050f05;
+            padding: 24px;
+            margin-top: 8px;
+        }
+
+        .diff-title {
+            font-size: 0.7rem;
+            color: #4a9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .diff-text {
+            font-size: 0.9rem;
+            color: #8cb;
+            line-height: 1.7;
+        }
+
+        /* Nav */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #111;
+            padding: 12px 0;
+            z-index: 100;
+            margin-bottom: 60px;
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .nav-chip {
+            padding: 8px 16px;
+            border: 1px solid #222;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            background: transparent;
+        }
+
+        .nav-chip:hover {
+            border-color: #555;
+            color: #ccc;
+        }
+
+        .nav-chip.active {
+            border-color: #fff;
+            color: #fff;
+            background: #111;
+        }
+
+        /* Back to top */
+        .back-top {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            border: 1px solid #222;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-top:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .competitors-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .summary-table {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="padding-bottom: 0;">
+        <header id="top">
+            <h1>Competitor Analysis</h1>
+            <p class="subtitle">Product Ideation Landscape Research</p>
+        </header>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-inner">
+            <a class="nav-chip active" href="#top" data-target="top">Overview</a>
+            <a class="nav-chip" href="#social-aesthetic-ai" data-target="social-aesthetic-ai">Social Aesthetic AI</a>
+            <a class="nav-chip" href="#agentic-trends-alert" data-target="agentic-trends-alert">Agentic Trends Alert</a>
+            <a class="nav-chip" href="#visual-prompt-editor" data-target="visual-prompt-editor">Visual Prompt Editor</a>
+            <a class="nav-chip" href="#coworking-prompt" data-target="coworking-prompt">Coworking Prompt</a>
+            <a class="nav-chip" href="#ai-photographer" data-target="ai-photographer">AI Photographer</a>
+            <a class="nav-chip" href="#infovideo" data-target="infovideo">Infovideo</a>
+            <a class="nav-chip" href="#low-cost-gateway" data-target="low-cost-gateway">Low-Cost Gateway</a>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 0;">
+
+        <!-- SUMMARY -->
+        <section class="summary-section">
+            <h2 class="summary-title">Overview</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width: 24px;">#</th>
+                        <th>Product Idea</th>
+                        <th>RP</th>
+                        <th>Category</th>
+                        <th>Competition</th>
+                        <th>Differentiation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="scrollToSection('social-aesthetic-ai')">
+                        <td style="color:#444;">01</td>
+                        <td style="color:#fff; font-weight:500;">Social Aesthetic AI</td>
+                        <td><span class="rp-tag">Lucia</span></td>
+                        <td>Photo & Video</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill medium"></div></div>
+                                <span style="font-size:0.75rem;">Medium</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge high">High</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('agentic-trends-alert')">
+                        <td style="color:#444;">02</td>
+                        <td style="color:#fff; font-weight:500;">Agentic Trends Alert</td>
+                        <td><span class="rp-tag">Lucia</span></td>
+                        <td>Productivity</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill medium"></div></div>
+                                <span style="font-size:0.75rem;">Medium</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge medium">Medium</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('visual-prompt-editor')">
+                        <td style="color:#444;">03</td>
+                        <td style="color:#fff; font-weight:500;">Visual Prompt Editor</td>
+                        <td><span class="rp-tag">Lucia</span></td>
+                        <td>Productivity</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill medium"></div></div>
+                                <span style="font-size:0.75rem;">Medium</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge high">High</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('coworking-prompt')">
+                        <td style="color:#444;">04</td>
+                        <td style="color:#fff; font-weight:500;">Coworking Prompt Engineering</td>
+                        <td><span class="rp-tag">Yeawon</span></td>
+                        <td>Productivity</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill low"></div></div>
+                                <span style="font-size:0.75rem;">Low</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge high">High</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('ai-photographer')">
+                        <td style="color:#444;">05</td>
+                        <td style="color:#fff; font-weight:500;">AI Photographer</td>
+                        <td><span class="rp-tag">Lucia</span></td>
+                        <td>Photo & Video</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill medium"></div></div>
+                                <span style="font-size:0.75rem;">Medium</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge high">High</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('infovideo')">
+                        <td style="color:#444;">06</td>
+                        <td style="color:#fff; font-weight:500;">Infovideo</td>
+                        <td><span class="rp-tag">Yeawon</span></td>
+                        <td>Photo & Video</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill high"></div></div>
+                                <span style="font-size:0.75rem;">High</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge low">Low</span></td>
+                    </tr>
+                    <tr onclick="scrollToSection('low-cost-gateway')">
+                        <td style="color:#444;">07</td>
+                        <td style="color:#fff; font-weight:500;">Low-Cost Gateway</td>
+                        <td><span class="rp-tag">Yeawon</span></td>
+                        <td>Photo & Video</td>
+                        <td>
+                            <div class="competition-bar">
+                                <div class="bar-track"><div class="bar-fill low"></div></div>
+                                <span style="font-size:0.75rem;">Low</span>
+                            </div>
+                        </td>
+                        <td><span class="diff-badge high">High</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 1. SOCIAL AESTHETIC AI -->
+        <section class="product-section" id="social-aesthetic-ai">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 01</div>
+                    <h2 class="product-name">Social Aesthetic AI</h2>
+                    <p class="product-desc">Reference profile aesthetic learning + agentic photo editing for Instagram creators</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Lucia</span>
+                    <span class="diff-badge high">High Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://www.digitalcameraworld.com/photography/photo-editing/make-this-look-like-film-i-tried-vscos-new-ai-prompt-photo-editing-its-not-perfect-but-it-did-generate-retro-looks" target="_blank">VSCO AI Lab</a></h3>
+                    <p class="competitor-desc">Prompt-based AI photo editing. "Make this look like film" text commands for style application. Uses Black Forest Lab's Flux.1 + proprietary tech. Regenerates parts of images beyond simple filters.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.imagine.art/blogs/ai-tools-for-instagram-content-creation" target="_blank">Krea</a></h3>
+                    <p class="competitor-desc">AI-powered image/video generation from text prompts. Build moodboards, campaign concepts, and branded content themes sharing the same visual DNA.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.socialmediatoday.com/news/instagram-updates-restyle-ai-editing-process-stories/803661/" target="_blank">Instagram Restyle</a></h3>
+                    <p class="competitor-desc">Meta's native AI editing feature. Conversational prompt-based image restyle in-stream. Makes it easy to edit, reimagine, or fully transform content within the app.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.photogptai.com/presets/instagram" target="_blank">PhotoGPT AI</a></h3>
+                    <p class="competitor-desc">AI-powered Instagram visuals matching personal/professional vibe. No photographer needed. Every photo stays true to visual identity. Works for Stories, Reels, Highlights.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity low">Low</span>
+                    <h3 class="competitor-name"><a href="https://socialstudio.ai" target="_blank">Social Studio</a></h3>
+                    <p class="competitor-desc">Automate Instagram content creation with AI. Template-based approach for consistent brand visuals across social channels.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity low">Low</span>
+                    <h3 class="competitor-name"><a href="https://ailooksmaxing.app/" target="_blank">Umax</a></h3>
+                    <p class="competitor-desc">Looksmaxing app with AI face analysis. Rates attractiveness, provides improvement tips. Referenced as marketing strategy inspiration.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">No existing product learns aesthetics from reference profiles and applies them as an "agentic coordinator" across your entire feed. VSCO/Krea edit individual photos; this product coordinates your complete profile aesthetic. The editing agent archive (stackable agentic editing tasks like LUTs) and aesthetic thumbnail generator are unique concepts.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 2. AGENTIC TRENDS ALERT -->
+        <section class="product-section" id="agentic-trends-alert">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 02</div>
+                    <h2 class="product-name">Agentic Trends Alert</h2>
+                    <p class="product-desc">AI trend reporter + reference management for small-medium content creators</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Lucia</span>
+                    <span class="diff-badge medium">Medium Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://www.forusapps.com/" target="_blank">TrendTok</a></h3>
+                    <p class="competitor-desc">AI-powered TikTok trend prediction & discovery. Filters by location, niche, and creator. Rebuilt AI (V5) with niche-level hashtags. Top 200 photo apps chart. Free, iOS & Android.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://virlo.ai/" target="_blank">Virlo</a></h3>
+                    <p class="competitor-desc">Tracks viral content with AI-powered analytics. Real-time insights for TikTok, YouTube Shorts, and Instagram Reels from 21.3K+ creators daily.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.hootsuite.com/research/social-trends" target="_blank">Hootsuite</a></h3>
+                    <p class="competitor-desc">Social listening + trend detection platform. Enterprise-focused social media management with AI-powered trend analysis and content scheduling.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://sproutsocial.com/insights/social-media-trends/" target="_blank">Sprout Social</a></h3>
+                    <p class="competitor-desc">AI-based social listening & trend analysis. 97% of marketing leaders say marketers must know how to use AI. Handles ideation, drafting, image generation.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">Existing tools focus on trend "discovery" only. This idea uniquely saves/manages past references and matches them to current trends ("agentic" approach). Integration with social search engines (not just analytics) and bringing up old references when they match new trends is a novel workflow that no competitor offers.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 3. VISUAL PROMPT EDITOR -->
+        <section class="product-section" id="visual-prompt-editor">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 03</div>
+                    <h2 class="product-name">Visual Prompt Editor</h2>
+                    <p class="product-desc">Table/Box GUI for image & video prompt structure visualization and iterative editing</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Lucia</span>
+                    <span class="diff-badge high">High Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://promptomania.com/prompt-builder/" target="_blank">promptoMANIA</a></h3>
+                    <p class="competitor-desc">Visual prompt builder for Midjourney, Stable Diffusion, DALL-E. Free browser-based tool. Beginner-friendly with advanced control. Cannot generate images directly.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://juma.ai/blog/ai-prompt-builders" target="_blank">PromptBuilder</a></h3>
+                    <p class="competitor-desc">Drag-and-drop visual blocks for prompt construction. Adds roles, context, instructions, and examples. Collaboration features. Built-in evaluation tools with model comparison.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://imageprompt.org/" target="_blank">ImagePrompt.org</a></h3>
+                    <p class="competitor-desc">AI-powered prompt creation tools. Generate and optimize prompts for Midjourney, Flux, Stable Diffusion. Enhances simple prompts with more detail automatically.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://aitoolinsight.com/ai-tools-leonardo-ai/" target="_blank">Leonardo.ai</a></h3>
+                    <p class="competitor-desc">Full creative production suite. Prompt Magic, Canvas, custom model training. Adjust prompt emphasis with brackets for granular control (e.g., "(epic lighting:1.5)").</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://letsenhance.io/blog/article/ai-text-prompt-guide/" target="_blank">LetsEnhance.io</a></h3>
+                    <p class="competitor-desc">Visual prompt builder that simplifies complex prompt creation. Powerful image generation + enhancement combo. Handles both concise and detailed prompts.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">Existing tools are "builders" (create from scratch), not "editors" (iterative modification). This product's Table/Box structure visualizing JSON prompt structure enables quick identification of problematic parts. The successive editing workflow, prompt search/organize, and personalized prompt enhancement based on user memory are unique. No competitor offers structured visual debugging of image/video prompts.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 4. COWORKING PROMPT -->
+        <section class="product-section" id="coworking-prompt">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 04</div>
+                    <h2 class="product-name">Coworking Workspace for Prompt Engineering</h2>
+                    <p class="product-desc">Real-time collaborative prompt workspace with visual style consistency enforcement</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Yeawon</span>
+                    <span class="diff-badge high">High Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.promptlayer.com/" target="_blank">PromptLayer</a></h3>
+                    <p class="competitor-desc">Collaborative model-agnostic prompt management. Teams version custom prompt templates. Opens up prompt iteration to non-technical stakeholders.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.braintrust.dev/articles/best-prompt-versioning-tools-2025" target="_blank">Braintrust</a></h3>
+                    <p class="competitor-desc">Prompts as versioned, evaluated artifacts. PM/engineer unified workspace. Scores 95/100 on collaboration. Connects versioning to evaluation and staged deployment.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://promptdrive.ai/" target="_blank">PromptDrive AI</a></h3>
+                    <p class="competitor-desc">Centralized prompt management for teams. Collaboration tools for sharing and assigning ownership. Prompt testing with integrated LLMs. Access control at team/folder level.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.getmaxim.ai/articles/top-5-ai-prompt-management-tools-in-2026/" target="_blank">Izlo</a></h3>
+                    <p class="competitor-desc">Collaborative prompt management with real-time remix, sandbox testing, and merging. Lightweight version control with deployment tools.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">All existing competitors manage LLM text prompts for developers. This product targets visual/creative teams (webtoon studios, indie games, visual studios) with a unique feature: automatic style deviation detection and correction. Rule settings that hold entire themes and real-time sharing with automatic consistency scoring is a blue ocean opportunity with zero direct competitors.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 5. AI PHOTOGRAPHER -->
+        <section class="product-section" id="ai-photographer">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 05</div>
+                    <h2 class="product-name">AI Photographer</h2>
+                    <p class="product-desc">Prompt-based AI camera with flash simulation and personal aesthetic learning</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Lucia</span>
+                    <span class="diff-badge high">High Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://www.geeky-gadgets.com/wayshot-app-learn-how-to-shoot-with-the-worlds-first-ai-photographer-guide-for-2026/" target="_blank">WayShot</a></h3>
+                    <p class="competitor-desc">"World's first AI photographer" app (Aug 2025). Auto retouching with composition, lighting balance, and facial clarity. Top 200 photo apps within one month. iPhone only.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://dazzcam.org/" target="_blank">Dazz Cam</a></h3>
+                    <p class="competitor-desc">Vintage film camera app. 50+ retro filters, 5M+ downloads. Sampled real film stock for colors/textures. Supports 135/120 film, toy cameras, instant cameras, 8mm/16mm video. Massive TikTok/Instagram popularity.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.pixelcut.ai/create/camera-flash-overlay-effect-generator" target="_blank">Pixelcut</a></h3>
+                    <p class="competitor-desc">AI camera flash overlay effect generator. Upload photo + text prompt to describe flash direction, brightness, and color. Full control over light source positioning.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.photomaticai.com/effects/flash/" target="_blank">Photomatic AI</a></h3>
+                    <p class="competitor-desc">AI flash effect simulation. Generate photos with prompts describing flash scenarios. High contrast, sharp details, dramatic shadows. E.g., "skateboarder mid-air with flash burst."</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity low">Low</span>
+                    <h3 class="competitor-name">OldRoll / FIMO / Kamon</h3>
+                    <p class="competitor-desc">Vintage camera apps (preset-based, not AI). OldRoll and FIMO capture photos/videos with retro vibes. Kamon offers 8 free vintage camera options including polaroid setting.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">"Flash without flash" (silent flash photography simulation) is a genuinely novel concept. No existing app lets AI control the entire camera pipeline (device, settings, lighting, lens, flash) via system prompts. Pixelcut/Photomatic add flash effects post-capture; this product simulates flash during capture. The personal aesthetic memory that builds over time ("your own photographer AI") goes far beyond any existing camera app.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 6. INFOVIDEO -->
+        <section class="product-section" id="infovideo">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 06</div>
+                    <h2 class="product-name">Infovideo</h2>
+                    <p class="product-desc">Consistent art style video generation from scripts for informational content creators</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Yeawon</span>
+                    <span class="diff-badge low">Low Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://invideo.io/make/ai-video-generator/" target="_blank">InVideo AI</a></h3>
+                    <p class="competitor-desc">Prompt to finished video. Auto-generates scripts, searches stock media libraries, adds clips, subtitles, music, and transitions. Industry leader in script-to-video.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://pictory.ai/pictory-features/script-to-video" target="_blank">Pictory</a></h3>
+                    <p class="competitor-desc">Script to video automation using AI. Converts written scripts into visual content with matching stock footage, captions, and transitions.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://www.canva.com/features/script-to-video/" target="_blank">Canva Script to Video</a></h3>
+                    <p class="competitor-desc">Free AI script-to-video maker. Wide range of talking avatars and voices. Upload own photo/audio for realistic effects. Backed by Canva's massive template library.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity high">High</span>
+                    <h3 class="competitor-name"><a href="https://www.heygen.com" target="_blank">HeyGen</a></h3>
+                    <p class="competitor-desc">Text/image/audio to AI video with narration, captions, visuals, and animations. Strong avatar and lip-sync capabilities. Enterprise and creator tiers.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.kapwing.com/ai/script-to-video" target="_blank">Kapwing</a></h3>
+                    <p class="competitor-desc">Free script to video tool. AI scans internet for B-roll, analyzes candidates for best cuts. Options for aspect ratio, voice over, background music, subtitles.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://ltx.studio/platform/script-to-video" target="_blank">LTX Studio</a></h3>
+                    <p class="competitor-desc">Transforms scripts into polished videos. Professional AI video generation with creative control. Strong in cinematic and story-driven content.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">This is the most competitive category (red ocean). Most tools already offer script-to-video conversion. The "consistent art style" aspect is a potential angle, but InVideo, HeyGen, and Canva are rapidly adding style consistency features. The "instant on-the-spot editing within AI video" is somewhat unique but Descript and CapCut are moving in this direction. Significant differentiation would be needed to compete.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+        <!-- 7. LOW-COST GATEWAY -->
+        <section class="product-section" id="low-cost-gateway">
+            <div class="product-header">
+                <div class="product-header-left">
+                    <div class="product-number">Product 07</div>
+                    <h2 class="product-name">Low-Cost Gateway</h2>
+                    <p class="product-desc">Smart model routing and preview-first workflow for individual creator cost optimization</p>
+                </div>
+                <div class="product-meta">
+                    <span class="rp-tag">Yeawon</span>
+                    <span class="diff-badge high">High Differentiation</span>
+                </div>
+            </div>
+
+            <div class="competitors-grid">
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://blog.cloudflare.com/ai-gateway-aug-2025-refresh/" target="_blank">Cloudflare AI Gateway</a></h3>
+                    <p class="competitor-desc">Unified billing, secure key storage, dynamic routing through one endpoint. Observability and cost control. Enterprise-focused API management layer.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.getmaxim.ai/articles/top-5-ai-gateways-for-2026/" target="_blank">Bifrost (Maxim AI)</a></h3>
+                    <p class="competitor-desc">Fastest open-source AI gateway. 50x faster than LiteLLM with 11us overhead at 5K RPS. Developer-focused, requires technical setup.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity medium">Medium</span>
+                    <h3 class="competitor-name"><a href="https://www.truefoundry.com/blog/understanding-azure-ai-gateway-pricing-for-2026---a-complete-breakdown" target="_blank">TrueFoundry</a></h3>
+                    <p class="competitor-desc">Smart routing with automatic failover across regions/providers. Unified routing for Azure OpenAI, AWS Bedrock, and private models. Enterprise SaaS pricing.</p>
+                </div>
+                <div class="competitor-card">
+                    <span class="competitor-similarity low">Low</span>
+                    <h3 class="competitor-name"><a href="https://www.getmaxim.ai/articles/top-5-enterprise-ai-gateways-in-2026/" target="_blank">AWS Bedrock</a></h3>
+                    <p class="competitor-desc">Managed, serverless access to foundation models from multiple providers. Native AWS integration. Enterprise-grade but complex setup for individual creators.</p>
+                </div>
+            </div>
+
+            <div class="differentiator">
+                <div class="diff-title">Key Differentiator</div>
+                <p class="diff-text">All existing AI gateways target enterprise/developer use cases with LLM text APIs. This product targets individual content creators for image/video generation cost optimization. The "Preview first, pay later" concept (low-cost drafts first, high-quality render only on approval) has no direct competitor. Smart model routing that auto-analyzes prompt complexity for visual content is a novel consumer-facing application of enterprise technology. Teams report 30-60% cost savings with intelligent routing.</p>
+            </div>
+            <a href="#top" class="back-top">Back to overview</a>
+        </section>
+
+    </div>
+
+    <script>
+        // Smooth scroll and active nav
+        const navChips = document.querySelectorAll('.nav-chip');
+
+        navChips.forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = chip.getAttribute('href').substring(1);
+                const el = document.getElementById(target);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                navChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+
+        // Intersection observer for nav highlighting
+        const sections = document.querySelectorAll('.product-section, .summary-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id || 'top';
+                    navChips.forEach(c => {
+                        c.classList.toggle('active', c.dataset.target === id || (id === undefined && c.dataset.target === 'top'));
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(s => observer.observe(s));
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+</body>
+</html>
