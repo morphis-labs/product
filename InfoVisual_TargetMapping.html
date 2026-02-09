@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Visual - Competitor Target Mapping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #f472b6 0%, #7c3aed 50%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #888;
+            font-size: 0.95rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filter-section {
+            margin-bottom: 40px;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: #12121a;
+            border: 1px solid #1a1a2e;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            border-color: #7c3aed;
+            color: #a78bfa;
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        /* Company Cards */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .company-card {
+            background: #12121a;
+            border: 1px solid #1a1a2e;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .company-card:hover {
+            border-color: #7c3aed;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+        }
+
+        .company-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border-bottom: 1px solid #1a1a2e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .company-type {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .type-enterprise {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            color: #fff;
+        }
+
+        .type-smb {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .type-creator {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+
+        .type-prosumer {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .company-body {
+            padding: 24px;
+        }
+
+        .target-section {
+            margin-bottom: 20px;
+        }
+
+        .target-label {
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .target-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .target-tag {
+            padding: 5px 12px;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #a78bfa;
+        }
+
+        .target-tag.primary {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(168, 85, 247, 0.2) 100%);
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        .usecase-section {
+            margin-bottom: 20px;
+        }
+
+        .usecase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .usecase-item {
+            padding: 10px 12px;
+            background: #0f0f15;
+            border: 1px solid #1a1a2e;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .usecase-icon {
+            font-size: 1rem;
+        }
+
+        .customer-examples {
+            padding-top: 16px;
+            border-top: 1px solid #1a1a2e;
+        }
+
+        .customer-label {
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .customer-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .customer-logo {
+            padding: 4px 10px;
+            background: #0f0f15;
+            border: 1px solid #1a1a2e;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 80px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+
+        .category-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .category-info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .category-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Matrix View */
+        .matrix-section {
+            margin-bottom: 80px;
+        }
+
+        .matrix-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .matrix-table th {
+            text-align: left;
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 12px;
+            border-bottom: 2px solid #1a1a2e;
+            background: #0f0f15;
+            position: sticky;
+            top: 0;
+        }
+
+        .matrix-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #12121a;
+            color: #aaa;
+            vertical-align: top;
+        }
+
+        .matrix-table tbody tr:hover {
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .company-cell {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .check {
+            color: #22c55e;
+        }
+
+        .check-primary {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        .empty {
+            color: #333;
+        }
+
+        /* Insight Cards */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #12121a 0%, #1a1a2e 100%);
+            border: 1px solid #252545;
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .insight-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .insight-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .insight-desc {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .company-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .usecase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .matrix-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Competitor Target Mapping</h1>
+            <p class="subtitle">경쟁사별 타겟 고객 & 유즈케이스 분석</p>
+            <p class="description">
+                같은 Faceless 영상이라도 앱 온보딩 vs 유튜브 엔터테인먼트는 전혀 다른 시장.<br>
+                각 경쟁사가 어떤 고객을 주로 타겟하고, 어떤 유즈케이스에 집중하는지 매핑.
+            </p>
+        </header>
+
+        <!-- Enterprise Video Platforms -->
+        <section class="category-section">
+            <div class="category-header">
+                <div class="category-icon" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">🏢</div>
+                <div class="category-info">
+                    <h2>Enterprise Video Platforms</h2>
+                    <p>대기업 교육, 마케팅, 세일즈 영상 자동화 - 아바타 기반</p>
+                </div>
+            </div>
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">HeyGen</span>
+                        <span class="company-type type-enterprise">Enterprise</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Enterprise L&D</span>
+                                <span class="target-tag primary">Sales Team</span>
+                                <span class="target-tag">Marketing Agency</span>
+                                <span class="target-tag">SMB Owner</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">🎓</span> 직원 교육/온보딩</div>
+                                <div class="usecase-item"><span class="usecase-icon">📧</span> 개인화 세일즈 아웃리치</div>
+                                <div class="usecase-item"><span class="usecase-icon">🌍</span> 글로벌 현지화 (175개 언어)</div>
+                                <div class="usecase-item"><span class="usecase-icon">📢</span> 광고 캠페인</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Notable Customers</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">Publicis</span>
+                                <span class="customer-logo">Ogilvy</span>
+                                <span class="customer-logo">Trivago</span>
+                                <span class="customer-logo">Komatsu</span>
+                                <span class="customer-logo">Advantive</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Synthesia</span>
+                        <span class="company-type type-enterprise">Enterprise</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Fortune 500 L&D</span>
+                                <span class="target-tag primary">HR Team</span>
+                                <span class="target-tag">Training Department</span>
+                                <span class="target-tag">Internal Comms</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">👋</span> 신입 온보딩</div>
+                                <div class="usecase-item"><span class="usecase-icon">📋</span> 컴플라이언스 교육</div>
+                                <div class="usecase-item"><span class="usecase-icon">💼</span> 세일즈 트레이닝</div>
+                                <div class="usecase-item"><span class="usecase-icon">📊</span> 제품 업데이트 공지</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Notable Customers (90% Fortune 100)</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">Amazon</span>
+                                <span class="customer-logo">ServiceNow</span>
+                                <span class="customer-logo">Merck</span>
+                                <span class="customer-logo">Mondelēz</span>
+                                <span class="customer-logo">SAP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Vyond</span>
+                        <span class="company-type type-enterprise">Enterprise</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">L&D Specialist</span>
+                                <span class="target-tag primary">Compliance Team</span>
+                                <span class="target-tag">Legal Training</span>
+                                <span class="target-tag">HR Department</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">⚖️</span> 법률/컴플라이언스</div>
+                                <div class="usecase-item"><span class="usecase-icon">🔒</span> 사이버보안 교육</div>
+                                <div class="usecase-item"><span class="usecase-icon">🏛️</span> 정부/공공기관</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎭</span> 애니메이션 트레이닝</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Notable Customers</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">Whole Foods</span>
+                                <span class="customer-logo">Indeed</span>
+                                <span class="customer-logo">Michigan State</span>
+                                <span class="customer-logo">Illinois Courts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Creator Platforms -->
+        <section class="category-section">
+            <div class="category-header">
+                <div class="category-icon" style="background: linear-gradient(135deg, #fb923c, #f97316);">🎬</div>
+                <div class="category-info">
+                    <h2>Content Creator Platforms</h2>
+                    <p>유튜버, 마케터, 인플루언서를 위한 콘텐츠 대량 생산 도구</p>
+                </div>
+            </div>
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">InVideo AI</span>
+                        <span class="company-type type-creator">Creator</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">YouTuber</span>
+                                <span class="target-tag primary">Digital Marketer</span>
+                                <span class="target-tag">Social Media Manager</span>
+                                <span class="target-tag">Agency</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">📺</span> 유튜브 콘텐츠</div>
+                                <div class="usecase-item"><span class="usecase-icon">📱</span> 소셜미디어 영상</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎯</span> 광고/프로모</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎓</span> 온라인 코스</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">User Profile</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">1인 크리에이터</span>
+                                <span class="customer-logo">마케팅 에이전시</span>
+                                <span class="customer-logo">스몰비즈</span>
+                                <span class="customer-logo">온라인 강사</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Steve.AI</span>
+                        <span class="company-type type-creator">Creator</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Faceless Creator</span>
+                                <span class="target-tag primary">Educator</span>
+                                <span class="target-tag">Kids Content</span>
+                                <span class="target-tag">News Channel</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">🌍</span> 지정학 뉴스</div>
+                                <div class="usecase-item"><span class="usecase-icon">👶</span> 키즈 스토리북</div>
+                                <div class="usecase-item"><span class="usecase-icon">📖</span> 교육 설명영상</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎭</span> 애니메이션 스토리</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Unique Positioning</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">Faceless 특화</span>
+                                <span class="customer-logo">지정학 채널</span>
+                                <span class="customer-logo">아동 콘텐츠</span>
+                                <span class="customer-logo">스토리텔링</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Pictory</span>
+                        <span class="company-type type-prosumer">Prosumer</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Blogger</span>
+                                <span class="target-tag primary">SEO Expert</span>
+                                <span class="target-tag">Educator</span>
+                                <span class="target-tag">Coach</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">📝</span> 블로그 → 영상 변환</div>
+                                <div class="usecase-item"><span class="usecase-icon">📊</span> PPT → 영상</div>
+                                <div class="usecase-item"><span class="usecase-icon">✂️</span> 긴영상 하이라이트</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎬</span> 코스 제작</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">User Profile</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">블로거</span>
+                                <span class="customer-logo">온라인 강사</span>
+                                <span class="customer-logo">코치</span>
+                                <span class="customer-logo">마케터</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Fliki</span>
+                        <span class="company-type type-prosumer">Prosumer</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">E-learning Creator</span>
+                                <span class="target-tag primary">Corporate HR</span>
+                                <span class="target-tag">International Marketer</span>
+                                <span class="target-tag">Educator</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">🗣️</span> 다국어 보이스오버 (80개)</div>
+                                <div class="usecase-item"><span class="usecase-icon">📚</span> 이러닝 콘텐츠</div>
+                                <div class="usecase-item"><span class="usecase-icon">💼</span> 기업 커뮤니케이션</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎓</span> 튜토리얼</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Unique Positioning</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">2000+ 보이스</span>
+                                <span class="customer-logo">80개 언어</span>
+                                <span class="customer-logo">TTS 품질</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Faceless & Automation -->
+        <section class="category-section">
+            <div class="category-header">
+                <div class="category-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">🤖</div>
+                <div class="category-info">
+                    <h2>Faceless & Automation Platforms</h2>
+                    <p>사람 등장 없이 완전 자동화된 콘텐츠 생산 및 포스팅</p>
+                </div>
+            </div>
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">AutoShorts.ai</span>
+                        <span class="company-type type-creator">Automation</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Faceless YT Creator</span>
+                                <span class="target-tag primary">Side Hustler</span>
+                                <span class="target-tag">Passive Income Seeker</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">📺</span> 유튜브 자동화 채널</div>
+                                <div class="usecase-item"><span class="usecase-icon">📱</span> 틱톡 자동 포스팅</div>
+                                <div class="usecase-item"><span class="usecase-icon">💰</span> 패시브 인컴</div>
+                                <div class="usecase-item"><span class="usecase-icon">🔄</span> 데일리 콘텐츠</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Unique Value</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">완전 자동화</span>
+                                <span class="customer-logo">자동 포스팅</span>
+                                <span class="customer-logo">보이스 클론</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">BigMotion AI</span>
+                        <span class="company-type type-creator">Automation</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Digital Marketer</span>
+                                <span class="target-tag primary">Entrepreneur</span>
+                                <span class="target-tag">Side Hustler</span>
+                                <span class="target-tag">Educator</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">🎯</span> 멀티플랫폼 동시 배포</div>
+                                <div class="usecase-item"><span class="usecase-icon">🔄</span> 핸즈프리 운영</div>
+                                <div class="usecase-item"><span class="usecase-icon">📱</span> 숏폼 대량생산</div>
+                                <div class="usecase-item"><span class="usecase-icon">💼</span> 12개+ 채널 운영</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Stats</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">5분 내 생성</span>
+                                <span class="customer-logo">ElevenLabs 통합</span>
+                                <span class="customer-logo">$20-35K/mo 수익</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">OpusClip</span>
+                        <span class="company-type type-prosumer">Repurposing</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Podcaster</span>
+                                <span class="target-tag primary">Interviewer</span>
+                                <span class="target-tag">Coach</span>
+                                <span class="target-tag">Agency</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">🎙️</span> 팟캐스트 → 10개 숏폼</div>
+                                <div class="usecase-item"><span class="usecase-icon">📹</span> 웨비나 리퍼포징</div>
+                                <div class="usecase-item"><span class="usecase-icon">📊</span> 바이럴 점수 예측</div>
+                                <div class="usecase-item"><span class="usecase-icon">📅</span> 소셜 스케줄링</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Stats</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">10M+ 유저</span>
+                                <span class="customer-logo">90%+ AI 정확도</span>
+                                <span class="customer-logo">원클릭 자동화</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SMB & DIY Tools -->
+        <section class="category-section">
+            <div class="category-header">
+                <div class="category-icon" style="background: linear-gradient(135deg, #00d4ff, #0ea5e9);">💼</div>
+                <div class="category-info">
+                    <h2>SMB & DIY Platforms</h2>
+                    <p>스몰비즈, 소규모 팀, 개인을 위한 셀프서비스 도구</p>
+                </div>
+            </div>
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Canva</span>
+                        <span class="company-type type-smb">SMB</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Small Biz Owner</span>
+                                <span class="target-tag primary">Social Media Manager</span>
+                                <span class="target-tag">Startup</span>
+                                <span class="target-tag">Student</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">📱</span> 소셜미디어 콘텐츠</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎨</span> 브랜드 마케팅</div>
+                                <div class="usecase-item"><span class="usecase-icon">📊</span> 프레젠테이션</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎬</span> 릴스/숏폼</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Stats</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">260M MAU</span>
+                                <span class="customer-logo">$3.5B ARR</span>
+                                <span class="customer-logo">LinkedIn/Stripe</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Animaker</span>
+                        <span class="company-type type-smb">SMB</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">SMB Marketer</span>
+                                <span class="target-tag primary">Educator</span>
+                                <span class="target-tag">Freelancer</span>
+                                <span class="target-tag">Content Creator</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">📊</span> 인포그래픽 영상</div>
+                                <div class="usecase-item"><span class="usecase-icon">📈</span> 데이터 시각화</div>
+                                <div class="usecase-item"><span class="usecase-icon">🎭</span> 캐릭터 애니메이션</div>
+                                <div class="usecase-item"><span class="usecase-icon">📱</span> 소셜 콘텐츠</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Demographics</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">25-34세 중심</span>
+                                <span class="customer-logo">인도 최다</span>
+                                <span class="customer-logo">62% 남성</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Mootion</span>
+                        <span class="company-type type-prosumer">Prosumer</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Speed-focused Creator</span>
+                                <span class="target-tag primary">Multi-niche Creator</span>
+                                <span class="target-tag">Startup</span>
+                                <span class="target-tag">SaaS Marketer</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases (All-in-One)</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">💰</span> 금융/크립토 설명</div>
+                                <div class="usecase-item"><span class="usecase-icon">👻</span> 호러/크립파스타</div>
+                                <div class="usecase-item"><span class="usecase-icon">🍳</span> 레시피/푸드</div>
+                                <div class="usecase-item"><span class="usecase-icon">🚀</span> SaaS 런치 영상</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Unique Value</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">65% 더 빠름</span>
+                                <span class="customer-logo">3분 영상 2분</span>
+                                <span class="customer-logo">다장르 지원</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-header">
+                        <span class="company-name">Revid.ai</span>
+                        <span class="company-type type-creator">Niche Creator</span>
+                    </div>
+                    <div class="company-body">
+                        <div class="target-section">
+                            <div class="target-label">Primary Target</div>
+                            <div class="target-list">
+                                <span class="target-tag primary">Viral Content Creator</span>
+                                <span class="target-tag primary">Niche YouTuber</span>
+                                <span class="target-tag">Horror/Crime</span>
+                                <span class="target-tag">Motivational</span>
+                            </div>
+                        </div>
+                        <div class="usecase-section">
+                            <div class="target-label">Key Use Cases (Niche Specific)</div>
+                            <div class="usecase-grid">
+                                <div class="usecase-item"><span class="usecase-icon">👻</span> 호러 스토리</div>
+                                <div class="usecase-item"><span class="usecase-icon">🔍</span> True Crime</div>
+                                <div class="usecase-item"><span class="usecase-icon">💪</span> 동기부여</div>
+                                <div class="usecase-item"><span class="usecase-icon">🏆</span> Top 10 리스티클</div>
+                            </div>
+                        </div>
+                        <div class="customer-examples">
+                            <div class="customer-label">Unique Value</div>
+                            <div class="customer-logos">
+                                <span class="customer-logo">바이럴 분석 AI</span>
+                                <span class="customer-logo">장르별 템플릿</span>
+                                <span class="customer-logo">2-5분 생성</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Matrix -->
+        <section class="matrix-section">
+            <h2 class="matrix-title">Target Customer Matrix</h2>
+            <div style="overflow-x: auto;">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 140px;">Company</th>
+                            <th>Enterprise L&D</th>
+                            <th>HR/Onboarding</th>
+                            <th>Sales Team</th>
+                            <th>Marketing Agency</th>
+                            <th>YouTuber</th>
+                            <th>Faceless Creator</th>
+                            <th>Educator</th>
+                            <th>SMB Owner</th>
+                            <th>Podcaster</th>
+                            <th>Kids Content</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="company-cell">HeyGen</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Synthesia</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Vyond</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">InVideo AI</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Steve.AI</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Pictory</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Fliki</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">AutoShorts</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">BigMotion</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">OpusClip</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Canva</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Animaker</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Mootion</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Revid.ai</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top: 16px; font-size: 0.8rem; color: #666;">
+                <span class="check-primary">●</span> Primary Target &nbsp;&nbsp;
+                <span class="check">●</span> Secondary Target &nbsp;&nbsp;
+                <span class="empty">-</span> Not Targeted
+            </p>
+        </section>
+
+        <!-- Use Case Matrix -->
+        <section class="matrix-section">
+            <h2 class="matrix-title">Use Case Matrix</h2>
+            <div style="overflow-x: auto;">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 140px;">Company</th>
+                            <th>Training/LMS</th>
+                            <th>Sales Video</th>
+                            <th>Marketing Ad</th>
+                            <th>YT Long-form</th>
+                            <th>YT Shorts</th>
+                            <th>TikTok/Reels</th>
+                            <th>Explainer</th>
+                            <th>Documentary</th>
+                            <th>Kids Story</th>
+                            <th>Horror/Crime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="company-cell">HeyGen</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Synthesia</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">InVideo AI</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Steve.AI</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">AutoShorts</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">BigMotion</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">OpusClip</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check">●</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Mootion</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="check">●</td>
+                            <td class="check-primary">●</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">Revid.ai</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                        </tr>
+                        <tr>
+                            <td class="company-cell">StoryShort</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                            <td class="check-primary">●</td>
+                            <td class="empty">-</td>
+                            <td class="empty">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Insights -->
+        <section>
+            <h2 class="matrix-title">Key Insights</h2>
+            <div class="insight-grid">
+                <div class="insight-card">
+                    <div class="insight-icon">🎯</div>
+                    <div class="insight-title">Enterprise vs Creator 명확한 분리</div>
+                    <div class="insight-desc">
+                        HeyGen, Synthesia, Vyond는 <strong>Enterprise L&D/HR</strong>에 집중.<br>
+                        InVideo, Steve.AI, Revid는 <strong>개인 크리에이터</strong> 타겟.<br><br>
+                        두 시장을 동시에 공략하는 도구는 거의 없음 → 포지셔닝 명확화 필요.
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-icon">🔄</div>
+                    <div class="insight-title">Faceless Automation 시장 급성장</div>
+                    <div class="insight-desc">
+                        AutoShorts, BigMotion 등 <strong>완전 자동화 + 자동 포스팅</strong> 도구 부상.<br>
+                        12개 채널 운영으로 $20-35K/월 수익 사례.<br><br>
+                        "패시브 인컴" 키워드로 사이드허슬러 타겟팅 효과적.
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-icon">🎬</div>
+                    <div class="insight-title">니치 장르 특화 기회</div>
+                    <div class="insight-desc">
+                        Revid.ai는 <strong>호러, True Crime, 동기부여</strong> 장르 특화.<br>
+                        Steve.AI는 <strong>지정학 뉴스, 키즈 콘텐츠</strong> 특화.<br><br>
+                        범용 도구보다 <strong>장르별 템플릿 + 톤</strong>이 차별화 포인트.
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-icon">📊</div>
+                    <div class="insight-title">블로거/SEO → 영상 전환 수요</div>
+                    <div class="insight-desc">
+                        Pictory, Lumen5는 <strong>블로그 → 영상</strong> 변환에 특화.<br>
+                        기존 텍스트 콘텐츠를 영상으로 리퍼포징하는 시장.<br><br>
+                        SEO 전문가, 콘텐츠 마케터가 주요 고객층.
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-icon">🎙️</div>
+                    <div class="insight-title">팟캐스트 리퍼포징 전문화</div>
+                    <div class="insight-desc">
+                        OpusClip은 <strong>대화 기반 콘텐츠</strong> 리퍼포징에 최적화.<br>
+                        팟캐스터, 인터뷰어, 코치가 핵심 고객.<br><br>
+                        45분 팟캐스트 → 12개 숏폼 자동 생성.
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-icon">💡</div>
+                    <div class="insight-title">Info Visual 기회 영역</div>
+                    <div class="insight-desc">
+                        <strong>캐릭터 일관성</strong>: 시리즈물에서 동일 캐릭터 유지 도구 부재<br>
+                        <strong>한국 시장</strong>: 한국어 TTS, K-콘텐츠 스타일 특화 없음<br>
+                        <strong>데이터 스토리</strong>: 차트/그래프 자동 애니메이션 전문 도구 부족
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer style="margin-top: 80px; padding-top: 40px; border-top: 1px solid #1a1a2e; text-align: center;">
+            <p style="font-size: 0.8rem; color: #444;">
+                Generated: February 2026 | 50+ Competitors Target Analysis
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
