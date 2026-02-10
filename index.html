@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Research Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .logo {
+            font-size: 0.9em;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 4em;
+            font-weight: 200;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .product-card {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 40px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            border-color: #333;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        .product-card:hover .card-number {
+            color: #000;
+        }
+        .product-card:hover .arrow {
+            transform: translateX(10px);
+            opacity: 1;
+        }
+        .card-number {
+            font-size: 5em;
+            font-weight: 100;
+            color: #ccc;
+            line-height: 1;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+        .card-title {
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #000;
+        }
+        .card-subtitle {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        .tag {
+            background: #e9ecef;
+            border: 1px solid #ccc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            color: #555;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .card-meta {
+            font-size: 0.85em;
+            color: #777;
+        }
+        .arrow {
+            font-size: 1.5em;
+            color: #000;
+            opacity: 0.3;
+            transition: all 0.3s;
+        }
+        .stats-section {
+            margin-top: 100px;
+            padding: 60px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        .stat-item {
+            padding: 20px;
+        }
+        .stat-value {
+            font-size: 3em;
+            font-weight: 200;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Morphis Labs</div>
+            <h1>Product Research</h1>
+            <p class="subtitle">AI 기반 Niche SaaS 시장 분석 및 경쟁사 리서치</p>
+        </header>
+
+        <div class="product-grid">
+            <a href="Product1_Infographic_DataStorytelling_AI.html" class="product-card">
+                <div class="card-number">01</div>
+                <h2 class="card-title">Infographic & Data Storytelling AI</h2>
+                <p class="card-subtitle">텍스트 대본을 도표, 그래프, 키네틱 타이포그래피로 시각화하는 AI 비디오 생성 툴</p>
+                <div class="card-tags">
+                    <span class="tag">Knowledge Creator</span>
+                    <span class="tag">Explainer Video</span>
+                    <span class="tag">Motion Graphics</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">4 Competitors Analyzed</span>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <a href="Product2_ContentRepurposing_AI.html" class="product-card">
+                <div class="card-number">02</div>
+                <h2 class="card-title">Multi-Format Content Repurposing AI</h2>
+                <p class="card-subtitle">하나의 콘텐츠를 Carousel, Shorts, Thread 등 다양한 포맷으로 자동 재가공하는 B2B SaaS</p>
+                <div class="card-tags">
+                    <span class="tag">Marketing Team</span>
+                    <span class="tag">Video to Carousel</span>
+                    <span class="tag">ROI Tool</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">4 Competitors Analyzed</span>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <a href="Product3_AIAgentBuilder.html" class="product-card">
+                <div class="card-number">03</div>
+                <h2 class="card-title">AI Agent Builder for Non-Tech Creators</h2>
+                <p class="card-subtitle">개발 지식 없이 자연어로 AI 에이전트를 세팅하는 노코드 자동화 플랫폼</p>
+                <div class="card-tags">
+                    <span class="tag">Solo-preneur</span>
+                    <span class="tag">No-Code</span>
+                    <span class="tag">VA Replacement</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-meta">5 Competitors Analyzed</span>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+        </div>
+
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">13+</div>
+                    <div class="stat-label">Competitors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Products</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Market Gaps</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$50-100</div>
+                    <div class="stat-label">Target Price</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Research Date: February 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

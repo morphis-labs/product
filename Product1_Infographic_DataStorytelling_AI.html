@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product 1: Infographic & Data Storytelling AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+            color: #222;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-bottom: 40px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #000;
+        }
+        .back-link span {
+            margin-right: 10px;
+        }
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        .product-badge {
+            display: inline-block;
+            border: 1px solid #333;
+            color: #555;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #555;
+            max-width: 800px;
+        }
+        .target-user {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        .target-user h3 {
+            color: #555;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .section {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .section-number {
+            font-size: 3em;
+            font-weight: 100;
+            color: #bbb;
+            margin-right: 25px;
+            line-height: 1;
+        }
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 400;
+        }
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .competitor-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            transition: border-color 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .competitor-card:hover {
+            border-color: #999;
+        }
+        .competitor-name {
+            font-size: 1.3em;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .competitor-name a {
+            color: #222;
+            text-decoration: none;
+        }
+        .competitor-name a:hover {
+            text-decoration: underline;
+        }
+        .competitor-url {
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+        .competitor-url a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .key-point {
+            background: #f0f0f0;
+            border-left: 2px solid #666;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
+            color: #444;
+        }
+        .feature-tag {
+            display: inline-block;
+            background: #e9ecef;
+            border: 1px solid #ccc;
+            color: #555;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin: 3px 3px 3px 0;
+        }
+        .pricing-badge {
+            display: inline-block;
+            background: #333;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        .revenue-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .revenue-table th, .revenue-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .revenue-table th {
+            color: #555;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+        .revenue-table tr:hover {
+            background: #f0f0f0;
+        }
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .cost-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        .cost-value {
+            font-size: 2em;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .cost-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .pain-point {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .pain-point h4 {
+            color: #555;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .gap-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        .gap-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        .conclusion-box {
+            background: #f8f9fa;
+            border: 2px solid #333;
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+        .conclusion-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        .verdict {
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+        .highlight {
+            color: #fff;
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .warning {
+            color: #888;
+            text-decoration: line-through;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul li {
+            padding: 10px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #444;
+        }
+        ul li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #999;
+        }
+        .exclusion-note {
+            background: #f8f9fa;
+            border: 1px dashed #999;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        .exclusion-note h4 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link"><span>←</span> Back to Research Hub</a>
+
+        <header>
+            <div class="product-badge">Product 01</div>
+            <h1>Infographic & Data Storytelling AI</h1>
+            <p class="subtitle">텍스트(대본)를 입력하면 도표, 그래프, 지도, 키네틱 타이포그래피를 생성하여 논리적인 흐름을 시각화하는 AI 비디오 생성 툴</p>
+            <div class="target-user">
+                <h3>Target User</h3>
+                <p>Vox, Johnny Harris, 슈카월드 같은 스타일의 '설명형 비디오(Explainer Video)'를 제작하고 싶은 개인 크리에이터 및 미디어 스타트업</p>
+            </div>
+        </header>
+
+        <div class="exclusion-note">
+            <h4>분석 제외 대상</h4>
+            <ul>
+                <li><strong>단순 스톡 영상 매칭 툴:</strong> InVideo, Pictory</li>
+                <li><strong>Talking Head/Avatar 툴:</strong> HeyGen, Synthesia</li>
+                <li><strong>General Generative Video:</strong> Sora, Runway</li>
+            </ul>
+        </div>
+
+        <!-- Section 1 -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Niche Competitor Discovery</h2>
+            </div>
+
+            <div class="competitor-grid">
+                <div class="competitor-card">
+                    <div class="competitor-name"><a href="https://www.napkin.ai" target="_blank">Napkin.ai ↗</a></div>
+                    <div class="competitor-url">napkin.ai</div>
+                    <div class="key-point">텍스트를 붙여넣으면 AI가 자동으로 인포그래픽, 다이어그램, 마인드맵, 플로우차트 생성. 30가지 이상 그래픽 타입.</div>
+                    <div>
+                        <span class="feature-tag">Text-to-Visual</span>
+                        <span class="feature-tag">Auto-Diagram</span>
+                        <span class="feature-tag">Elastic Design</span>
+                    </div>
+                    <div class="pricing-badge">Free / $9/월</div>
+                    <p style="margin-top: 15px; font-size: 0.85em; color: #666;"><strong>매출:</strong> $1.7M ARR (2025) | <strong>펀딩:</strong> $10M Seed (Accel, CRV 리드) | <strong>팀:</strong> 15명 | <strong>한계:</strong> 비디오 출력 불가</p>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-name"><a href="https://www.rawshorts.com" target="_blank">Raw Shorts ↗</a></div>
+                    <div class="competitor-url">rawshorts.com</div>
+                    <div class="key-point">텍스트 스크립트 분석 → 자동 스토리보드 생성. Dynamic Charts & Graphs 애니메이션으로 데이터 시각화.</div>
+                    <div>
+                        <span class="feature-tag">Text-to-Video</span>
+                        <span class="feature-tag">Chart Animation</span>
+                        <span class="feature-tag">1M+ Assets</span>
+                    </div>
+                    <div class="pricing-badge">$39/월 Pro</div>
+                    <p style="margin-top: 15px; font-size: 0.85em; color: #666;"><strong>펀딩:</strong> $3.77M Series A (2016) | <strong>팀:</strong> 1-10명 | <strong>고객:</strong> IBM, Sony | <strong>한계:</strong> 템플릿 기반 커스터마이징 제한</p>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-name"><a href="https://flourish.studio" target="_blank">Flourish ↗</a></div>
+                    <div class="competitor-url">flourish.studio</div>
+                    <div class="key-point">데이터 스토리텔링 전문. Bar Chart Race, Animated Maps 등 50+ 템플릿으로 데이터 애니메이션.</div>
+                    <div>
+                        <span class="feature-tag">Data Viz</span>
+                        <span class="feature-tag">Racing Charts</span>
+                        <span class="feature-tag">Scrollytelling</span>
+                    </div>
+                    <div class="pricing-badge">Free / Enterprise</div>
+                    <p style="margin-top: 15px; font-size: 0.85em; color: #666;"><strong>2022년 Canva 인수</strong> (금액 미공개) | 인수 당시 1M+ 유저, 10M+ 시각화 생성, 21B+ 뷰 | <strong>Canva:</strong> $2.7B 매출, $40B 밸류 (2024)</p>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-name"><a href="https://jitter.video" target="_blank">Jitter ↗</a></div>
+                    <div class="competitor-url">jitter.video</div>
+                    <div class="key-point">웹 기반 모션 디자인. Kinetic Typography 프리셋으로 텍스트 애니메이션 빠르게 제작.</div>
+                    <div>
+                        <span class="feature-tag">Motion Design</span>
+                        <span class="feature-tag">Kinetic Type</span>
+                        <span class="feature-tag">Browser-based</span>
+                    </div>
+                    <div class="pricing-badge">Free / 유료</div>
+                    <p style="margin-top: 15px; font-size: 0.85em; color: #666;"><strong>매출:</strong> $3.6M (2024) | <strong>펀딩:</strong> $150K (Y Combinator) | <strong>팀:</strong> 24명 | 20,000+ 크리에이티브 팀 사용</p>
+                </div>
+            </div>
+
+            <div class="gap-card" style="margin-top: 30px;">
+                <div class="gap-title">발견된 시장 공백</div>
+                <p style="color: #888;">현재 시장에는 Napkin(정적 인포그래픽), Flourish(데이터 차트), Jitter(키네틱 타이포)가 분리되어 있음. <span class="highlight">"대본 → 인포그래픽 + 차트 + 키네틱 텍스트 통합 비디오"</span> 올인원 솔루션 부재.</p>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h2 class="section-title">Target User Revenue Analysis</h2>
+            </div>
+
+            <h3 style="color: #666; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Mid-tier 지식 유튜버 (구독자 5만~50만) 수익 구조</h3>
+
+            <table class="revenue-table">
+                <tr>
+                    <th>수익원</th>
+                    <th>월 수익</th>
+                    <th>비고</th>
+                </tr>
+                <tr>
+                    <td>AdSense</td>
+                    <td>$1,000 ~ $5,000</td>
+                    <td>지식/금융 니치 RPM $5.7~$15</td>
+                </tr>
+                <tr>
+                    <td>스폰서십</td>
+                    <td>$500 ~ $5,000/영상</td>
+                    <td>금융, 테크 니치 단가 높음</td>
+                </tr>
+                <tr>
+                    <td>유료 멤버십</td>
+                    <td>$500 ~ $3,000</td>
+                    <td>YouTube, Patreon</td>
+                </tr>
+                <tr>
+                    <td>뉴스레터/강연</td>
+                    <td>$1,000 ~ $10,000+</td>
+                    <td>유료 뉴스레터, 컨설팅</td>
+                </tr>
+            </table>
+
+            <div class="cost-grid">
+                <div class="cost-item">
+                    <div class="cost-value">$36-40</div>
+                    <div class="cost-label">모션 그래픽 디자이너 시급</div>
+                </div>
+                <div class="cost-item">
+                    <div class="cost-value">$350-650</div>
+                    <div class="cost-label">프리랜서 일당</div>
+                </div>
+                <div class="cost-item">
+                    <div class="cost-value">$5-10</div>
+                    <div class="cost-label">분당 편집 비용</div>
+                </div>
+            </div>
+
+            <div class="pain-point">
+                <h4>크리에이터 핵심 Pain Point</h4>
+                <ul>
+                    <li>After Effects 진입장벽: 배우는 데 수개월~수년 소요</li>
+                    <li>외주 비용 부담: 10분 영상 모션 그래픽 외주 $500~$2,000</li>
+                    <li>시간 압박: 주 2-3회 업로드를 위한 빠른 제작 필수</li>
+                </ul>
+            </div>
+
+            <div class="gap-card">
+                <div class="gap-title">가격 상한선 분석</div>
+                <p style="color: #888;">모션 그래픽 월 외주: <strong>$1,000~$3,000+</strong></p>
+                <p style="color: #888;">크리에이터 SaaS 지불 의사: <span class="highlight">$50~$150/월</span></p>
+                <p style="margin-top: 15px; color: #ccc;">결론: 적정 가격대 <span class="highlight">$29~$99/월</span> — 외주 대비 10배 이상 저렴</p>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">Market Gap Analysis</h2>
+            </div>
+
+            <div class="gap-card">
+                <div class="gap-title">Gap #1: "InVideo는 가볍고, After Effects는 어렵다"</div>
+                <p style="color: #888;">두 극단 사이의 <span class="highlight">"프로슈머급 중간 지점"</span>이 비어있음. Linearity Move, Jitter가 이 시장을 노리고 있으나, '지식 크리에이터' 특화 솔루션은 없음.</p>
+            </div>
+
+            <div class="gap-card">
+                <div class="gap-title">Gap #2: "데이터 시각화 + 비디오 출력 통합 부재"</div>
+                <ul>
+                    <li>Napkin.ai: 정적 인포그래픽만 (비디오 X)</li>
+                    <li>Flourish: 차트 애니메이션 훌륭하나 비디오 편집 없음</li>
+                    <li>Raw Shorts: 차트 있으나 AI 분석이 기본 수준</li>
+                </ul>
+            </div>
+
+            <div class="gap-card">
+                <div class="gap-title">Gap #3: "키네틱 타이포그래피 자동화 미흡"</div>
+                <p style="color: #888;">Vox, Johnny Harris 스타일의 핵심 = 움직이는 텍스트. 현재 이를 자동화하는 툴은 Jitter(수동), CapCut(기본), Steve.ai(미최적화) 수준.</p>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <div class="conclusion-box">
+            <h3>포지셔닝 결론</h3>
+            <p class="verdict">
+                이 프로덕트는 <span class="warning">"InVideo의 하위 호환"</span>이 아니라,<br>
+                <span class="highlight">"모션 그래픽 디자이너를 대체하는 AI"</span>로 포지셔닝 가능
+            </p>
+            <ul style="margin-top: 25px;">
+                <li>모션 그래픽 외주 $500~$2,000/영상 → SaaS로 90% 절감</li>
+                <li>Napkin + Flourish + Jitter 조합 작업을 원클릭 통합</li>
+                <li>타겟 유저 월 $3K~$10K 수익 → $50~$100/월 충분히 지불 가능</li>
+                <li>After Effects와 InVideo 사이 "프로슈머 공백" 확인</li>
+            </ul>
+            <p style="margin-top: 25px; padding: 20px; background: #111; border-radius: 8px; color: #888;">
+                <strong style="color: #fff;">핵심 USP:</strong> "대본만 넣으면 Vox 스타일 인포그래픽 영상이 5분 만에 완성"
+            </p>
+        </div>
+
+        <footer>
+            <p>Research Date: February 2025 | Product 01</p>
+        </footer>
+    </div>
+</body>
+</html>
